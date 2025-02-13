@@ -106,7 +106,7 @@ google-auth-oauthlib==0.4.6
 google-pasta==0.2.0
 googleapis-common-protos==1.66.0
 gower==0.1.2
-graphviz==0.20.1
+graphviz
 greenlet==3.0.3
 gritql==0.1.5
 grpcio==1.67.1
