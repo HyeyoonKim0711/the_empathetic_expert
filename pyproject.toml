@@ -7,7 +7,7 @@ license = "Apache 2.0"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.11,<3.13"  # 기존 3.12를 허용하도록 변경
+python = ">=3.11,<3.12"
 langchain = "^0.3.13"
 langgraph = "^0.2.60"
 langchain-openai = "^0.2.14"
