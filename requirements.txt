@@ -4,3 +4,4 @@ pydantic
 tavily
 typing
 langgraph
+langchain_core
