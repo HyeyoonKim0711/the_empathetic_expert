@@ -1,7 +1,0 @@
-python-dotenv==1.0.1
-langchain
-pydantic
-tavily
-typing
-langgraph
-langchain_core
