@@ -36,12 +36,15 @@ if "react_agent" not in st.session_state:
     st.session_state["thread_id"] = random_uuid()
 
     loaded_prompt = load_prompt("prompts/empathetic_expert.yaml", encoding="utf-8")
-    final_template = loaded_prompt.template
+    st.session_state["new_prompt"] = loaded_prompt.template  # LLM 호출 없이 그대로 저장
 
-    prompt1 = PromptTemplate.from_template(template=final_template)
-    llm = ChatOpenAI(model_name="gpt-4o", temperature=0.5)
-    chain1 = prompt1 | llm | StrOutputParser()
-    st.session_state["new_prompt"] = chain1.invoke("")
+    #loaded_prompt = load_prompt("prompts/empathetic_expert.yaml", encoding="utf-8")
+    #final_template = loaded_prompt.template
+
+    #prompt1 = PromptTemplate.from_template(template=final_template)
+    #llm = ChatOpenAI(model_name="gpt-4o", temperature=0.5)
+    #chain1 = prompt1 | llm | StrOutputParser()
+    #st.session_state["new_prompt"] = chain1.invoke("")
 
     tool1 = retriever_tool()  # pdf_search
     tool2 = GoogleSearch(max_results=3)
