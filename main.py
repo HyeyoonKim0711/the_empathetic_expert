@@ -21,7 +21,8 @@ st.title("The Empathetic Expert 💬")
 clear_btn = st.button("대화 초기화")
 
 # 고유 스레드 ID(랜덤으로 지어주기 -> 대화 기억용도 -> 대화내용 초기화하면 이것도 초기화)
-st.session_state["thread_id"] = random_uuid()
+
+
 if clear_btn:
     st.session_state["messages"] = []  # 대화 정보 지우기
     st.session_state["thread_id"] = random_uuid()  # 사용자정보 기억 지우기
@@ -32,27 +33,22 @@ if "messages" not in st.session_state:
 
 # ReAct Agent 초기화
 if "react_agent" not in st.session_state:
-    st.session_state["react_agent"] = None
+    st.session_state["thread_id"] = random_uuid()
 
-# 프롬프트 생성
-loaded_prompt = load_prompt("prompts/empathetic_expert.yaml", encoding="utf-8")
-final_template = loaded_prompt.template
-     
-prompt1 = PromptTemplate.from_template(template=final_template)
-llm = ChatOpenAI(model_name="gpt-4o", temperature=0.5)
-chain1 = prompt1 | llm | StrOutputParser()
-st.session_state["new_prompt"] = chain1.invoke("")
+    loaded_prompt = load_prompt("prompts/empathetic_expert.yaml", encoding="utf-8")
+    final_template = loaded_prompt.template
 
-# 에이전트 생성
-tool1 = retriever_tool()
-#tool2 = WebSearchTool(max_results=3).create()
-tool2 = GoogleSearch(max_results=3)
+    prompt1 = PromptTemplate.from_template(template=final_template)
+    llm = ChatOpenAI(model_name="gpt-4o", temperature=0.5)
+    chain1 = prompt1 | llm | StrOutputParser()
+    st.session_state["new_prompt"] = chain1.invoke("")
 
-st.session_state["react_agent"] = create_agent_executor(
+    tool1 = retriever_tool()  # pdf_search
+    tool2 = GoogleSearch(max_results=3)
+
+    st.session_state["react_agent"] = create_agent_executor(
         model_name="gpt-4o", tools=[tool1, tool2]
-        )
-st.session_state["thread_id"] = random_uuid()
-#st.success("제출이 완료되었습니다! 상담을 진행하세요.")
+    )
 
 # 이전 대화 기록 출력
 print_messages()
@@ -76,7 +72,12 @@ if user_input:
             )
             add_message("user", user_input)
             for tool_arg in tool_args:
-                add_message("assistant", tool_arg["tool_result"], "tool_result", tool_arg["tool_name"])
+                add_message(
+                    "assistant",
+                    tool_arg["tool_result"],
+                    "tool_result",
+                    tool_arg["tool_name"],
+                )
             add_message("assistant", agent_answer)
     else:
         warning_msg.warning("개인정보 입력을 완료해주세요.")
