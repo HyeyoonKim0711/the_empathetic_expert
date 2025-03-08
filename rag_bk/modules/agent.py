@@ -84,8 +84,8 @@ For sources:
 
 **출처**
 
-[1] Link
-[2] Link
+[1] Link or Document name
+[2] Link or Document name
 
 3.Be sure to combine sources. For example this is not correct:
 
