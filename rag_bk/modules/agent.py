@@ -78,14 +78,14 @@ When you use "search" tool, Please follow these instructions:
 
 For sources:
 - Include all sources used in your report
-- Provide full links to relevant websites or specific document paths
+- Provide full links to relevant websites
 - Separate each source by a newline. Use two spaces at the end of each line to create a newline in Markdown.
 - It will look like:
 
 **출처**
 
-[1] Link or Document name
-[2] Link or Document name
+[1] Link
+[2] Link
 
 3.Be sure to combine sources. For example this is not correct:
 
