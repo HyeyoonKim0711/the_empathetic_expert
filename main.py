@@ -50,7 +50,7 @@ if "react_agent" not in st.session_state:
     tool2 = GoogleSearch(max_results=3)
 
     st.session_state["react_agent"] = create_agent_executor(
-        model_name="gpt-4o", tools=[tool1, tool2]
+        model_name="gpt-4o-mini", tools=[tool1, tool2]
     )
 
 # 이전 대화 기록 출력
