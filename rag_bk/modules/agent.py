@@ -21,6 +21,7 @@ Here are the tools you can use:
 {tools}
 you can use only one tool at a time
 If you find the information for answer in the PDF document, don't use "search" tool.
+If user asks about lung cancer or breast cancer, use 'pdf_search' first
 
 ###
 When you use "pdf_search" tool, Please follow these instructions:
@@ -34,7 +35,6 @@ When you use "pdf_search" tool, Please follow these instructions:
 3. If no relevant information is found in the PDF, notify the user that the information was not available in the document, and then use the `web_search` tool.
 4. Include the retrieved content from `pdf_search` in your answer, along with metadata like the source and page number.
 5. Ensure your response is clear, concise, and formatted properly.
-6. When responding to emotionally sensitive questions, provide detailed explanations, but avoid using numbered or bullet-point lists. Keep the response conversational and flowing naturally.
 
 Current Scratchpad:
 {agent_scratchpad}
