@@ -13,15 +13,6 @@ def create_agent_executor(model_name="gpt-4o-mini", tools=[]):
 
     # 시스템 프롬프트 설정
     system_prompt = (
-        """ 
-         ### 🚫 도구 사용 제한 규칙:
-         1. 사용자가 폐암 또는 유방암에 대해 물어보면 **무조건 `pdf_search`를 우선 사용하세요.**
-            예) 폐암에 대해 설명해줘.
-         2. 사용자가 특정 문서를 요청하거나 최신 정보를 요구하는 경우에는는 `pdf_search` 또는 `web_search`를 사용하세요.  
-            - (예: "최근 폐암 치료 연구 결과 알려줘" → `web_search` 사용)
-         3. 감정적인 질문이나 위로가 필요한 경우에는 도구를 사용하지 마세요.  
-            - (예: "나 폐암 선고받아서 무서워." → 공감과 위로 제공, 도구 사용 X)
-         """
 
         # 생성된 페르소나 프롬프트 입력
         +f'{st.session_state["new_prompt"]}'
@@ -31,6 +22,15 @@ Here are the tools you can use:
 {tools}
 you can use only one tool at a time.
 If you find the information for answer in the PDF document, don't use "search" tool.
+
+###
+Tool Usage Restriction Rules:
+1. If the user asks about **lung cancer or breast cancer**, you must **use `pdf_search` first**.  
+   - Example: "Tell me about lung cancer."
+2. If the user requests a specific document or asks for the latest information, use either `pdf_search` or `web_search`.  
+   - (e.g., "Tell me the latest research results on lung cancer treatment" → use `web_search`)
+3. If the user asks an emotional question or needs comfort, **do not use any tools**.  
+   - (e.g., "I was diagnosed with lung cancer and I'm scared." → Offer empathy and support, **do not use tools**)
 
 ###
 When you use "pdf_search" tool, Please follow these instructions:
