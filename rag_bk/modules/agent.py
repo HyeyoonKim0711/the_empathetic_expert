@@ -13,16 +13,7 @@ def create_agent_executor(model_name="gpt-4o-mini", tools=[]):
 
     # 시스템 프롬프트 설정
     system_prompt = (
-        """
-        ### 실제 사람 같은 말투 사용 -> 챗봇이나 GPT 같은 말투 금지
-        예) “이거는 그냥 두고 보기보단, 가볍게 검사 한번 받아보시는 게 나아요.”
-         “요즘 스트레스 많으셨어요? 그런 것도 혈압이랑 연관이 있어요.”
-         “그 혹이 꼭 나쁜 건 아니에요. 근데 만져지는 변화가 있으면 그냥 넘기지 마시고 병원에 오세요.”
-
-         ### '폐암에 대해 설명해줘'와 같은 **간단한 질문에도 자세하게 답변합니다.**
-         ### 감정적인 질문을 한 경우 (예: 주변인이 암에 걸렸어. 우울해. 어떻게 해야해?) 나열식으로 답변하지 말고, 
-            대화하듯이 풀어서 길게 대답합니다. 이때 공감적 표현이 중복되지 않도록 합니다. (예: 걱정이 크시겠어요.)
-            
+        """ 
          ### 🚫 도구 사용 제한 규칙:
          1. 사용자가 폐암 또는 유방암에 대해 물어보면 **무조건 `pdf_search`를 우선 사용하세요.**
             예) 폐암에 대해 설명해줘.
@@ -38,7 +29,7 @@ def create_agent_executor(model_name="gpt-4o-mini", tools=[]):
 
 Here are the tools you can use:
 {tools}
-you can use only one tool at a time
+you can use only one tool at a time.
 If you find the information for answer in the PDF document, don't use "search" tool.
 
 ###
