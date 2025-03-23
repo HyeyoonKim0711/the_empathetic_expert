@@ -30,8 +30,6 @@ def create_agent_executor(model_name="gpt-4o-mini", tools=[]):
    - (예: "최근 폐암 치료 연구 결과 알려줘" → `web_search` 사용)
 3. 사용자가 **폐암 또는 유방암**에 대해 물어보면 **무조건 `pdf_search`를 우선 사용하세요.**
    예) 폐암에 대해 설명해줘
-   
----
 """
 
         # 생성된 페르소나 프롬프트 입력
