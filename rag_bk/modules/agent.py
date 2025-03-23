@@ -13,24 +13,14 @@ def create_agent_executor(model_name="gpt-4o-mini", tools=[]):
 
     # 시스템 프롬프트 설정
     system_prompt = (
-
         # 생성된 페르소나 프롬프트 입력
-        +f'{st.session_state["new_prompt"]}'
+        f'{st.session_state["new_prompt"]}'
         + """
 
 Here are the tools you can use:
 {tools}
-you can use only one tool at a time.
+you can use only one tool at a time
 If you find the information for answer in the PDF document, don't use "search" tool.
-
-###
-Tool Usage Restriction Rules:
-1. If the user asks about **lung cancer or breast cancer**, you must **use `pdf_search` first**.  
-   - Example: "Tell me about lung cancer."
-2. If the user requests a specific document or asks for the latest information, use either `pdf_search` or `web_search`.  
-   - (e.g., "Tell me the latest research results on lung cancer treatment" → use `web_search`)
-3. If the user asks an emotional question or needs comfort, **do not use any tools**.  
-   - (e.g., "I was diagnosed with lung cancer and I'm scared." → Offer empathy and support, **do not use tools**)
 
 ###
 When you use "pdf_search" tool, Please follow these instructions:
@@ -62,7 +52,7 @@ When you use "search" tool, Please follow these instructions:
 
 For sources:
 - Include all sources used in your report
-- Provide full links to relevant websites
+- Provide full links to relevant websites or specific document paths
 - Separate each source by a newline. Use two spaces at the end of each line to create a newline in Markdown.
 - It will look like:
 
@@ -90,6 +80,5 @@ There should be no redundant sources. It should simply be:
     )
 
     return agent_executor
-
 
 
