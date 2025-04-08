@@ -9,7 +9,7 @@ def create_agent_executor(model_name="gpt-4o-mini", tools=[]):
     memory = MemorySaver()
 
     # 모델 설정
-    model = ChatOpenAI(model_name=model_name)
+    model = ChatOpenAI(model_name=model_name, temperature = 0)
 
     # 시스템 프롬프트 설정
     system_prompt = ( 
