@@ -65,7 +65,13 @@ def stream_handler(streamlit_container, agent_executor, inputs, config):
     agent_answer = ""
     agent_message = None  # Pre-declare agent_message variable
 
-    container = streamlit_container.container()
+    #container = streamlit_container.container()
+    if streamlit_container is not None:
+        container = streamlit_container.container()
+    else:
+        container = None  # 아무것도 안 함
+
+    
     with container:
         for chunk_msg, metadata in agent_executor.stream(
             inputs, config, stream_mode="messages"
