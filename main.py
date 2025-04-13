@@ -58,59 +58,59 @@ print_messages()
 
 
 # 사용자 입력 처리
-user_input = st.chat_input("궁금한 내용을 물어보세요!")
-warning_msg = st.empty()
-
-if user_input:
-    agent = st.session_state["react_agent"]
-    if agent is not None:
-        config = {"configurable": {"thread_id": st.session_state["thread_id"]}}
-
-        # 사용자 메시지 출력
-        st.chat_message("user").write(user_input)
-
-        # container는 만들되 사용은 안 함 (stream_handler 내부 출력 막기 위해 따로 출력)
-        container = st.empty()
-
-        # 챗봇 응답 처리 (container는 전달하되, container에 직접 쓰지 않음)
-        container_messages, tool_args, agent_answer = stream_handler(
-            container,
-            agent,
-            {"messages": [("human", user_input)]},
-            config,
-        )
-
-        # 도구 응답 저장
-        for tool_arg in tool_args:
-            add_message(
-                "assistant",
-                tool_arg["tool_result"],
-                "tool_result",
-                tool_arg["tool_name"],
-            )
-
-        # 최종 응답 저장
-        add_message("assistant", agent_answer)
-
-        # 직접 markdown으로 챗봇 응답 출력 (아바타 포함)
-        st.markdown(f"""
-        <div style='display: flex; align-items: flex-start; margin-top: 10px;'>
-            <img src='https://i.namu.wiki/i/nTpvyrZYPoJBnrydRk9_5WAUX6kz1B8Wu6IvFIrLnxwoaV9BD-fP23SGhHp3wjls59AftaAIAa1xWWGCaruCog.webp'
-                 width='50' style='margin-right: 10px; border-radius: 50%;'>
-            <div style='background-color: #f0f2f6; color: black; padding: 12px 18px; border-radius: 15px; max-width: 85%; font-size: 16px; line-height: 1.5;'>
-                {agent_answer}
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    else:
-        warning_msg.warning("개인정보 입력을 완료해주세요.")
-
-
-
-# # 사용자 입력 처리
 # user_input = st.chat_input("궁금한 내용을 물어보세요!")
 # warning_msg = st.empty()
+
+# if user_input:
+#     agent = st.session_state["react_agent"]
+#     if agent is not None:
+#         config = {"configurable": {"thread_id": st.session_state["thread_id"]}}
+
+#         # 사용자 메시지 출력
+#         st.chat_message("user").write(user_input)
+
+#         # container는 만들되 사용은 안 함 (stream_handler 내부 출력 막기 위해 따로 출력)
+#         container = st.empty()
+
+#         # 챗봇 응답 처리 (container는 전달하되, container에 직접 쓰지 않음)
+#         container_messages, tool_args, agent_answer = stream_handler(
+#             container,
+#             agent,
+#             {"messages": [("human", user_input)]},
+#             config,
+#         )
+
+#         # 도구 응답 저장
+#         for tool_arg in tool_args:
+#             add_message(
+#                 "assistant",
+#                 tool_arg["tool_result"],
+#                 "tool_result",
+#                 tool_arg["tool_name"],
+#             )
+
+#         # 최종 응답 저장
+#         add_message("assistant", agent_answer)
+
+#         # 직접 markdown으로 챗봇 응답 출력 (아바타 포함)
+#         st.markdown(f"""
+#         <div style='display: flex; align-items: flex-start; margin-top: 10px;'>
+#             <img src='https://i.namu.wiki/i/nTpvyrZYPoJBnrydRk9_5WAUX6kz1B8Wu6IvFIrLnxwoaV9BD-fP23SGhHp3wjls59AftaAIAa1xWWGCaruCog.webp'
+#                  width='50' style='margin-right: 10px; border-radius: 50%;'>
+#             <div style='background-color: #f0f2f6; color: black; padding: 12px 18px; border-radius: 15px; max-width: 85%; font-size: 16px; line-height: 1.5;'>
+#                 {agent_answer}
+#             </div>
+#         </div>
+#         """, unsafe_allow_html=True)
+
+#     else:
+#         warning_msg.warning("개인정보 입력을 완료해주세요.")
+
+
+
+# 사용자 입력 처리
+user_input = st.chat_input("궁금한 내용을 물어보세요!")
+warning_msg = st.empty()
 
 # if user_input:
 #     agent = st.session_state["react_agent"]
@@ -136,3 +136,44 @@ if user_input:
 #             add_message("assistant", agent_answer)
 #     else:
 #         warning_msg.warning("개인정보 입력을 완료해주세요.")
+
+if user_input:
+    agent = st.session_state["react_agent"]
+    if agent is not None:
+        config = {"configurable": {"thread_id": st.session_state["thread_id"]}}
+
+        st.chat_message("user").write(user_input)
+
+        with st.chat_message("assistant"):
+            container = st.empty()
+            container_messages, tool_args, agent_answer = stream_handler(
+                container,
+                agent,
+                {"messages": [("human", user_input)]},
+                config,
+            )
+
+            # 👉 커스텀 아바타 이미지와 응답 출력
+            col1, col2 = st.columns([1, 9])
+            with col1:
+                st.image(
+                    "https://i.namu.wiki/i/nTpvyrZYPoJBnrydRk9_5WAUX6kz1B8Wu6IvFIrLnxwoaV9BD-fP23SGhHp3wjls59AftaAIAa1xWWGCaruCog.webp",
+                    width=50,
+                )
+            with col2:
+                st.markdown(agent_answer)
+
+            # 🔁 기록 저장
+            add_message("user", user_input)
+            for tool_arg in tool_args:
+                add_message(
+                    "assistant",
+                    tool_arg["tool_result"],
+                    "tool_result",
+                    tool_arg["tool_name"],
+                )
+            add_message("assistant", agent_answer)
+
+    else:
+        warning_msg.warning("개인정보 입력을 완료해주세요.")
+
