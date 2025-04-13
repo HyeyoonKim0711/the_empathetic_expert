@@ -69,9 +69,12 @@ if user_input:
         # 사용자 메시지 출력
         st.chat_message("user").write(user_input)
 
-        # 챗봇 응답 받기 (중복 출력 제거: container X)
-        _, tool_args, agent_answer = stream_handler(
-            None,
+        # container는 만들되 사용은 안 함 (stream_handler 내부 출력 막기 위해 따로 출력)
+        container = st.empty()
+
+        # 챗봇 응답 처리 (container는 전달하되, container에 직접 쓰지 않음)
+        container_messages, tool_args, agent_answer = stream_handler(
+            container,
             agent,
             {"messages": [("human", user_input)]},
             config,
@@ -89,7 +92,7 @@ if user_input:
         # 최종 응답 저장
         add_message("assistant", agent_answer)
 
-        # 챗봇 응답 + 아이콘 (아이콘 크기 확대!)
+        # 직접 markdown으로 챗봇 응답 출력 (아바타 포함)
         st.markdown(f"""
         <div style='display: flex; align-items: flex-start; margin-top: 10px;'>
             <img src='https://i.namu.wiki/i/nTpvyrZYPoJBnrydRk9_5WAUX6kz1B8Wu6IvFIrLnxwoaV9BD-fP23SGhHp3wjls59AftaAIAa1xWWGCaruCog.webp'
@@ -102,8 +105,6 @@ if user_input:
 
     else:
         warning_msg.warning("개인정보 입력을 완료해주세요.")
-
-
 
 
 
