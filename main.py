@@ -70,13 +70,13 @@ if user_input:
         st.chat_message("user").write(user_input)
 
         # 응답 생성 (기존 구조 유지)
-        #container = st.empty()
-        #container_messages, tool_args, agent_answer = stream_handler(
-        #    container,
-        #    agent,
-        #    {"messages": [("human", user_input)]},
-        #    config,
-        #)
+        container = st.empty()
+        container_messages, tool_args, agent_answer = stream_handler(
+            container,
+            agent,
+            {"messages": [("human", user_input)]},
+            config,
+        )
 
         # 도구 응답 저장
         for tool_arg in tool_args:
