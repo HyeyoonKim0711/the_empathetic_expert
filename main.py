@@ -56,6 +56,7 @@ if "react_agent" not in st.session_state:
 # 이전 대화 기록 출력
 print_messages()
 
+
 # 사용자 입력 처리
 user_input = st.chat_input("궁금한 내용을 물어보세요!")
 warning_msg = st.empty()
@@ -64,23 +65,72 @@ if user_input:
     agent = st.session_state["react_agent"]
     if agent is not None:
         config = {"configurable": {"thread_id": st.session_state["thread_id"]}}
+
+        # 사용자 메시지는 그대로 출력 (streamlit 기본 챗버블)
         st.chat_message("user").write(user_input)
-        with st.chat_message("assistant"):
-            container = st.empty()
-            container_messages, tool_args, agent_answer = stream_handler(
-                container,
-                agent,
-                {"messages": [("human", user_input)]},
-                config,
+
+        # 응답 생성 (기존 구조 유지)
+        container = st.empty()
+        container_messages, tool_args, agent_answer = stream_handler(
+            container,
+            agent,
+            {"messages": [("human", user_input)]},
+            config,
+        )
+
+        # 도구 응답 저장
+        for tool_arg in tool_args:
+            add_message(
+                "assistant",
+                tool_arg["tool_result"],
+                "tool_result",
+                tool_arg["tool_name"],
             )
-            add_message("user", user_input)
-            for tool_arg in tool_args:
-                add_message(
-                    "assistant",
-                    tool_arg["tool_result"],
-                    "tool_result",
-                    tool_arg["tool_name"],
-                )
-            add_message("assistant", agent_answer)
+
+        # 최종 응답 저장
+        add_message("assistant", agent_answer)
+
+        # ✅ 챗봇 응답을 markdown + 이미지로 출력
+        st.markdown(f"""
+        <div style='display: flex; align-items: flex-start; margin-top: 10px;'>
+            <img src='https://i.namu.wiki/i/nTpvyrZYPoJBnrydRk9_5WAUX6kz1B8Wu6IvFIrLnxwoaV9BD-fP23SGhHp3wjls59AftaAIAa1xWWGCaruCog.webp' width='36' style='margin-right: 8px; border-radius: 50%;'>
+            <div style='background-color: #f0f2f6; color: black; padding: 10px 15px; border-radius: 15px; max-width: 80%;'>
+                {agent_answer}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
     else:
         warning_msg.warning("개인정보 입력을 완료해주세요.")
+
+
+
+
+# # 사용자 입력 처리
+# user_input = st.chat_input("궁금한 내용을 물어보세요!")
+# warning_msg = st.empty()
+
+# if user_input:
+#     agent = st.session_state["react_agent"]
+#     if agent is not None:
+#         config = {"configurable": {"thread_id": st.session_state["thread_id"]}}
+#         st.chat_message("user").write(user_input)
+#         with st.chat_message("assistant"):
+#             container = st.empty()
+#             container_messages, tool_args, agent_answer = stream_handler(
+#                 container,
+#                 agent,
+#                 {"messages": [("human", user_input)]},
+#                 config,
+#             )
+#             add_message("user", user_input)
+#             for tool_arg in tool_args:
+#                 add_message(
+#                     "assistant",
+#                     tool_arg["tool_result"],
+#                     "tool_result",
+#                     tool_arg["tool_name"],
+#                 )
+#             add_message("assistant", agent_answer)
+#     else:
+#         warning_msg.warning("개인정보 입력을 완료해주세요.")
