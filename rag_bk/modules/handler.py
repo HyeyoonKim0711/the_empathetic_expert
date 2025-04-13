@@ -105,8 +105,8 @@ def stream_handler(streamlit_container, agent_executor, inputs, config):
 
                 if metadata["langgraph_node"] == "agent":
                     if chunk_msg.content:
-                        if agent_message is None:
-                            agent_message = st.empty()
+                        #if agent_message is None:
+                        #    agent_message = st.empty()
                         # Accumulate agent message
                         agent_answer += chunk_msg.content
                         #agent_message.markdown(agent_answer)
