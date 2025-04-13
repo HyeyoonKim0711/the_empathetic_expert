@@ -70,11 +70,11 @@ if user_input:
         st.chat_message("user").write(user_input)
 
         # container는 만들되 사용은 안 함 (stream_handler 내부 출력 막기 위해 따로 출력)
-        #container = st.empty()
+        container = st.empty()
 
         # 챗봇 응답 처리 (container는 전달하되, container에 직접 쓰지 않음)
         container_messages, tool_args, agent_answer = stream_handler(
-            None,
+            container,
             agent,
             {"messages": [("human", user_input)]},
             config,
