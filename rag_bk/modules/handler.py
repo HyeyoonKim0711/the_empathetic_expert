@@ -65,50 +65,49 @@ def stream_handler(streamlit_container, agent_executor, inputs, config):
     agent_answer = ""
     agent_message = None  # Pre-declare agent_message variable
 
-    container = streamlit_container.container() if streamlit_container else None
-    if streamlit_container:
-        with container:
-            for chunk_msg, metadata in agent_executor.stream(
-                inputs, config, stream_mode="messages"
-            ):
-                if hasattr(chunk_msg, "tool_calls") and chunk_msg.tool_calls:
-                    # Initialize tool call result
-                    tool_arg = {
-                        "tool_name": "",
-                        "tool_result": "",
-                        "tool_call_id": chunk_msg.tool_calls[0]["id"],
-                    }
-                    # Save tool name
-                    tool_arg["tool_name"] = chunk_msg.tool_calls[0]["name"]
-                    if tool_arg["tool_name"]:
-                        tool_args.append(tool_arg)
+    container = streamlit_container.container()
+    with container:
+        for chunk_msg, metadata in agent_executor.stream(
+            inputs, config, stream_mode="messages"
+        ):
+            if hasattr(chunk_msg, "tool_calls") and chunk_msg.tool_calls:
+                # Initialize tool call result
+                tool_arg = {
+                    "tool_name": "",
+                    "tool_result": "",
+                    "tool_call_id": chunk_msg.tool_calls[0]["id"],
+                }
+                # Save tool name
+                tool_arg["tool_name"] = chunk_msg.tool_calls[0]["name"]
+                if tool_arg["tool_name"]:
+                    tool_args.append(tool_arg)
 
-                if hasattr(chunk_msg, "tool_call_chunks") and chunk_msg.tool_call_chunks:
-                    if len(chunk_msg.tool_call_chunks) > 0:  # Add None check
-                        # Accumulate tool call arguments
-                        chunk_msg.tool_call_chunks[0]["args"]
+            if hasattr(chunk_msg, "tool_call_chunks") and chunk_msg.tool_call_chunks:
+                if len(chunk_msg.tool_call_chunks) > 0:  # Add None check
+                    # Accumulate tool call arguments
+                    chunk_msg.tool_call_chunks[0]["args"]
 
-                if metadata["langgraph_node"] == "tools":
-                    # Save tool execution results
-                    current_tool_message = get_current_tool_message(
-                        tool_args, chunk_msg.tool_call_id
-                    )
-                    if current_tool_message:
-                        current_tool_message["tool_result"] = chunk_msg.content
-                        with st.status(f'✅ {current_tool_message["tool_name"]}'):
-                            if current_tool_message["tool_name"] == "web_search":
-                                st.markdown(
-                                    format_search_result(
-                                        current_tool_message["tool_result"]
-                                    )
+            if metadata["langgraph_node"] == "tools":
+                # Save tool execution results
+                current_tool_message = get_current_tool_message(
+                    tool_args, chunk_msg.tool_call_id
+                )
+                if current_tool_message:
+                    current_tool_message["tool_result"] = chunk_msg.content
+                    with st.status(f'✅ {current_tool_message["tool_name"]}'):
+                        if current_tool_message["tool_name"] == "web_search":
+                            st.markdown(
+                                format_search_result(
+                                    current_tool_message["tool_result"]
                                 )
+                            )
 
-                if metadata["langgraph_node"] == "agent":
-                    if chunk_msg.content:
-                        #if agent_message is None:
-                        #    agent_message = st.empty()
-                        # Accumulate agent message
-                        agent_answer += chunk_msg.content
-                        #agent_message.markdown(agent_answer)
+            if metadata["langgraph_node"] == "agent":
+                if chunk_msg.content:
+                    if agent_message is None:
+                        agent_message = st.empty()
+                    # Accumulate agent message
+                    agent_answer += chunk_msg.content
+                    agent_message.markdown(agent_answer)
 
-            return container, tool_args, agent_answer
+        return container, tool_args, agent_answer
