@@ -66,13 +66,12 @@ if user_input:
     if agent is not None:
         config = {"configurable": {"thread_id": st.session_state["thread_id"]}}
 
-        # 사용자 메시지는 그대로 출력 (streamlit 기본 챗버블)
+        # 사용자 메시지 출력
         st.chat_message("user").write(user_input)
 
-        # 응답 생성 (기존 구조 유지)
-        container = st.empty()
-        container_messages, tool_args, agent_answer = stream_handler(
-            container,
+        # 챗봇 응답 받기 (중복 출력 제거: container X)
+        _, tool_args, agent_answer = stream_handler(
+            None,
             agent,
             {"messages": [("human", user_input)]},
             config,
@@ -90,11 +89,12 @@ if user_input:
         # 최종 응답 저장
         add_message("assistant", agent_answer)
 
-        # ✅ 챗봇 응답을 markdown + 이미지로 출력
+        # 챗봇 응답 + 아이콘 (아이콘 크기 확대!)
         st.markdown(f"""
         <div style='display: flex; align-items: flex-start; margin-top: 10px;'>
-            <img src='https://i.namu.wiki/i/nTpvyrZYPoJBnrydRk9_5WAUX6kz1B8Wu6IvFIrLnxwoaV9BD-fP23SGhHp3wjls59AftaAIAa1xWWGCaruCog.webp' width='36' style='margin-right: 8px; border-radius: 50%;'>
-            <div style='background-color: #f0f2f6; color: black; padding: 10px 15px; border-radius: 15px; max-width: 80%;'>
+            <img src='https://i.namu.wiki/i/nTpvyrZYPoJBnrydRk9_5WAUX6kz1B8Wu6IvFIrLnxwoaV9BD-fP23SGhHp3wjls59AftaAIAa1xWWGCaruCog.webp'
+                 width='50' style='margin-right: 10px; border-radius: 50%;'>
+            <div style='background-color: #f0f2f6; color: black; padding: 12px 18px; border-radius: 15px; max-width: 85%; font-size: 16px; line-height: 1.5;'>
                 {agent_answer}
             </div>
         </div>
@@ -102,6 +102,7 @@ if user_input:
 
     else:
         warning_msg.warning("개인정보 입력을 완료해주세요.")
+
 
 
 
