@@ -142,37 +142,40 @@ if user_input:
     if agent is not None:
         config = {"configurable": {"thread_id": st.session_state["thread_id"]}}
 
+        # 사용자 메시지 출력
         st.chat_message("user").write(user_input)
 
+        # 챗봇 응답 (스트리밍 + 이미지 함께 출력)
         with st.chat_message("assistant"):
-            container = st.empty()
-            container_messages, tool_args, agent_answer = stream_handler(
-                container,
-                agent,
-                {"messages": [("human", user_input)]},
-                config,
-            )
-
-            # 👉 커스텀 아바타 이미지와 응답 출력
             col1, col2 = st.columns([1, 9])
+
             with col1:
                 st.image(
                     "https://i.namu.wiki/i/nTpvyrZYPoJBnrydRk9_5WAUX6kz1B8Wu6IvFIrLnxwoaV9BD-fP23SGhHp3wjls59AftaAIAa1xWWGCaruCog.webp",
                     width=50,
                 )
-            with col2:
-                st.markdown(agent_answer)
 
-            # 🔁 기록 저장
-            add_message("user", user_input)
-            for tool_arg in tool_args:
-                add_message(
-                    "assistant",
-                    tool_arg["tool_result"],
-                    "tool_result",
-                    tool_arg["tool_name"],
-                )
-            add_message("assistant", agent_answer)
+            with col2:
+                container = st.empty()  # 여기로 스트리밍 응답이 실시간 출력됨
+
+        # 실제 응답 처리 (stream_handler가 container에 streaming 출력)
+        container_messages, tool_args, agent_answer = stream_handler(
+            container,
+            agent,
+            {"messages": [("human", user_input)]},
+            config,
+        )
+
+        # 메시지 기록 저장
+        add_message("user", user_input)
+        for tool_arg in tool_args:
+            add_message(
+                "assistant",
+                tool_arg["tool_result"],
+                "tool_result",
+                tool_arg["tool_name"],
+            )
+        add_message("assistant", agent_answer)
 
     else:
         warning_msg.warning("개인정보 입력을 완료해주세요.")
