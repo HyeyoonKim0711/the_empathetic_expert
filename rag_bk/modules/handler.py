@@ -109,6 +109,6 @@ def stream_handler(streamlit_container, agent_executor, inputs, config):
                             agent_message = st.empty()
                         # Accumulate agent message
                         agent_answer += chunk_msg.content
-                        agent_message.markdown(agent_answer)
+                        #agent_message.markdown(agent_answer)
 
             return container, tool_args, agent_answer
