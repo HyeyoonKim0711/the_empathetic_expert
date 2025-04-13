@@ -74,7 +74,7 @@ if user_input:
 
         # 챗봇 응답 처리 (container는 전달하되, container에 직접 쓰지 않음)
         container_messages, tool_args, agent_answer = stream_handler(
-            None,
+            container,
             agent,
             {"messages": [("human", user_input)]},
             config,
