@@ -147,6 +147,13 @@ if user_input:
 
         # 챗봇 응답 (스트리밍 + 이미지 함께 출력)
         with st.chat_message("assistant"):
+
+            st.markdown("""
+            <style>
+            .stChatAvatar {display: none !important;}
+            </style>
+            """, unsafe_allow_html=True)                
+
             col1, col2 = st.columns([1, 9])
 
             with col1:
