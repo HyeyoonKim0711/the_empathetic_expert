@@ -18,13 +18,6 @@ load_dotenv()
 langsmith("챗봇상담")
 
 st.title("The Empathetic Expert 💬")
-
-st.markdown("""
-            <style>
-            .stChatAvatar {display: none !important;}
-            </style>
-            """, unsafe_allow_html=True) 
-
 clear_btn = st.button("대화 초기화")
 
 # 고유 스레드 ID(랜덤으로 지어주기 -> 대화 기억용도 -> 대화내용 초기화하면 이것도 초기화)
@@ -153,14 +146,7 @@ if user_input:
         st.chat_message("user").write(user_input)
 
         # 챗봇 응답 (스트리밍 + 이미지 함께 출력)
-        with st.chat_message("assistant"):
-
-            # st.markdown("""
-            # <style>
-            # .stChatAvatar {display: none !important;}
-            # </style>
-            # """, unsafe_allow_html=True)                
-
+        with st.chat_message("assistant", avatar="https://i.namu.wiki/i/nTpvyrZYPoJBnrydRk9_5WAUX6kz1B8Wu6IvFIrLnxwoaV9BD-fP23SGhHp3wjls59AftaAIAa1xWWGCaruCog.webp"):
             col1, col2 = st.columns([1, 9])
 
             with col1:
