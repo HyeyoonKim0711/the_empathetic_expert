@@ -146,7 +146,7 @@ if user_input:
         st.chat_message("user").write(user_input)
 
         # 챗봇 응답 (스트리밍 + 이미지 함께 출력)
-        with st.chat_message("assistant", avatar="https://pbs.twimg.com/profile_images/475294419487186944/lKajHUMh_400x400.jpeg"):
+        with st.chat_message("assistant"):
             col1, col2 = st.columns([1, 9])
 
             with col1:
