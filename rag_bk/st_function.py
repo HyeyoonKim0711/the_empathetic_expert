@@ -26,7 +26,7 @@ def print_messages():
             with st.chat_message(message.chat_message.role):
                 if message.chat_message.role == "assistant":
                     st.image(
-                        "https://i.namu.wiki/i/nTpvyrZYPoJBnrydRk9_5WAUX6kz1B8Wu6IvFIrLnxwoaV9BD-fP23SGhHp3wjls59AftaAIAa1xWWGCaruCog.webp",
+                        "https://github.com/HyeyoonKim0711/the_empathetic_expert/blob/main/fig/empathetic_expert.png",
                         width=50,
                     )
                 st.write(message.chat_message.content)
