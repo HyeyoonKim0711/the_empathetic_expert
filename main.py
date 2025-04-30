@@ -151,7 +151,7 @@ if user_input:
 
             with col1:
                 st.image(
-                    "https://github.com/HyeyoonKim0711/the_empathetic_expert/blob/main/fig/empathetic_expert.png",
+                    "https://github.com/HyeyoonKim0711/the_empathetic_expert/blob/main/fig/empathetic_expert.png?raw=true",
                     width=50,
                 )
 
