@@ -151,7 +151,7 @@ if user_input:
 
             with col1:
                 st.image(
-                    "https://i.namu.wiki/i/nTpvyrZYPoJBnrydRk9_5WAUX6kz1B8Wu6IvFIrLnxwoaV9BD-fP23SGhHp3wjls59AftaAIAa1xWWGCaruCog.webp",
+                    "https://github.com/HyeyoonKim0711/the_empathetic_expert/blob/main/fig/empathetic_expert.png",
                     width=50,
                 )
 
